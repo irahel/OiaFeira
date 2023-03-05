@@ -7,10 +7,15 @@ import {
 import {
   Input,
   InputLabel,
-  InputAdornment 
+  InputAdornment
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { UserContext } from 'common/context/User';
+import { useContext } from 'react';
 
 function Login() {
+  const history = useHistory();
+  const {name, setName, balance, setBalance} = useContext(UserContext);
   return (
     <Container>
       <Titulo>
@@ -21,6 +26,8 @@ function Login() {
           Nome
         </InputLabel>
         <Input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
           type="text"
         />
       </InputContainer>
@@ -29,6 +36,8 @@ function Login() {
           Saldo
         </InputLabel>
         <Input
+        value={balance}
+        onChange={(e) => setBalance(e.target.value)}
         type="number"
         startAdornment={
           <InputAdornment position="start">
@@ -40,6 +49,7 @@ function Login() {
       <Button
         variant="contained"
         color="primary"
+        onClick={() => history.push('/feira')}
       >
         Avançar
       </Button>
