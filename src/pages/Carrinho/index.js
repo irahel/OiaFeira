@@ -39,7 +39,7 @@ function Carrinho() {
        </Button>
         <Snackbar
           anchorOrigin={
-            { 
+            {
               vertical: 'top',
               horizontal: 'right'
             }

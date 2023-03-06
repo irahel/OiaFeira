@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 export const ShoppingCartContext = createContext();
 
@@ -6,15 +6,27 @@ ShoppingCartContext.displayName = 'ShoppingCartContext';
 
 export const ShoppingCartProvider = ({ children }) => {
     const [shoppingCart, setShoppingCart] = useState([]);
+    const [productsQuantity, setProductsQuantity] = useState(0);
 
     return(
-    <ShoppingCartContext.Provider value={{shoppingCart, setShoppingCart}}>
+    <ShoppingCartContext.Provider 
+    value={{
+      shoppingCart,
+      productsQuantity,
+      setProductsQuantity,
+      setShoppingCart
+      }}>
         {children}
     </ShoppingCartContext.Provider>)
 }
 
 export const useShoppingCartContext = () => {
-    const {shoppingCart, setShoppingCart} = useContext(ShoppingCartContext);
+    const {
+      shoppingCart,
+      setShoppingCart,
+      productsQuantity,
+      setProductsQuantity
+    } = useContext(ShoppingCartContext);
 
     function changeQuantity(id, quantity) {
         setShoppingCart(previousShoppingCart => previousShoppingCart.map(product => {
@@ -47,11 +59,21 @@ export const useShoppingCartContext = () => {
         changeQuantity(id, -1);
       }
 
+      useEffect(() => {
+        const newQuantity = shoppingCart.reduce((acc, product) => {
+          return acc + product.quantidade;
+        }, 0)
+        setProductsQuantity(newQuantity);
+
+      }, [shoppingCart, setProductsQuantity])
+
+
     return {
         shoppingCart,
         setShoppingCart,
         handleAddToCart,
-        handleRemoveToCart
+        handleRemoveToCart,
+        productsQuantity
     }
 
 }
