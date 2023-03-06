@@ -4,13 +4,16 @@ import { useState } from 'react';
 import { Container, Voltar, TotalContainer, PagamentoContainer} from './styles';
 import { useShoppingCartContext } from 'common/context/ShoppingCart';
 import Produto from 'components/Produto';
+import { useHistory } from 'react-router-dom';
 
 function Carrinho() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { shoppingCart } = useShoppingCartContext();
+  const history = useHistory();
   return (
     <Container>
-      <Voltar />
+      <Voltar 
+        onClick={() => history.goBack() } />
       <h2>
         Carrinho
       </h2>
