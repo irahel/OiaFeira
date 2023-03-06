@@ -32,6 +32,7 @@ function Produto({
             onClick={
               () => handleRemoveToCart(id)
             }
+            disabled={!productInShoppingCart || productInShoppingCart?.quantidade === 0}
           >
             <RemoveIcon />
           </IconButton>
