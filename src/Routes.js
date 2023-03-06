@@ -17,11 +17,11 @@ export default function Router() {
             <Route path={"/feira"}>
               <Feira />
             </Route>
+            <Route path={"/carrinho"}>
+                <Carrinho />
+            </Route>
           </ShoppingCartProvider>
         </UserProvider>
-        <Route path={"/carrinho"}>
-            <Carrinho />
-        </Route>
       </Switch>
     </BrowserRouter>
   );
