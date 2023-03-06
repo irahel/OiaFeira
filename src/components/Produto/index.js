@@ -12,7 +12,7 @@ function Produto({
   valor,
   unidade
 }) {
-  const { shoppingCart, handleAddToCart } = useShoppingCartContext();
+  const { shoppingCart, handleAddToCart, handleRemoveToCart } = useShoppingCartContext();
   const productInShoppingCart = shoppingCart.find(product => product.id === id);
 
   return (
@@ -29,11 +29,15 @@ function Produto({
         <div>
           <IconButton
             color="secondary"
+            onClick={
+              () => handleRemoveToCart(id)
+            }
           >
             <RemoveIcon />
           </IconButton>
           <p>{productInShoppingCart?.quantidade || 0}</p>
           <IconButton
+            color='primary'
             onClick={
               () => handleAddToCart({nome, foto, id, valor})
               }>

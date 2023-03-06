@@ -16,27 +16,42 @@ export const ShoppingCartProvider = ({ children }) => {
 export const useShoppingCartContext = () => {
     const {shoppingCart, setShoppingCart} = useContext(ShoppingCartContext);
 
+    function changeQuantity(id, quantity) {
+        setShoppingCart(previousShoppingCart => previousShoppingCart.map(product => {
+            if(product.id === id) {
+              product.quantidade += quantity;
+              return product;
+            }
+            return product;
+        }))
+    }
+
     function handleAddToCart(newProduct) {
         const productExists = shoppingCart.some(product => product.id === newProduct.id);
         if(!productExists) {
           newProduct.quantidade = 1;
           return setShoppingCart(previousShoppingCart => [...previousShoppingCart, newProduct])
         }
-        setShoppingCart(previousShoppingCart => previousShoppingCart.map(product => {
-          if(product.id === newProduct.id) {
-            return {
-              ...product,
-              quantidade: product.quantidade + 1
-            }
-          }
-          return product;
-        }))
+        changeQuantity(newProduct.id, 1);
+      }
+
+      function handleRemoveToCart(id){
+        const productInShoppingCart = shoppingCart.find(product => product.id === id);
+        if (!productInShoppingCart) {
+          return;
+        }
+        const isLastProduct = productInShoppingCart.quantidade === 1;
+        if (isLastProduct) {
+          return setShoppingCart(previousShoppingCart => previousShoppingCart.filter(product => product.id !== id))
+        }
+        changeQuantity(id, -1);
       }
 
     return {
         shoppingCart,
         setShoppingCart,
-        handleAddToCart
+        handleAddToCart,
+        handleRemoveToCart
     }
 
 }
