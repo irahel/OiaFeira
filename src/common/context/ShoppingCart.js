@@ -7,14 +7,17 @@ ShoppingCartContext.displayName = 'ShoppingCartContext';
 export const ShoppingCartProvider = ({ children }) => {
     const [shoppingCart, setShoppingCart] = useState([]);
     const [productsQuantity, setProductsQuantity] = useState(0);
+    const [totalValue, setTotalValue] = useState(0);
 
     return(
-    <ShoppingCartContext.Provider 
+    <ShoppingCartContext.Provider
     value={{
       shoppingCart,
       productsQuantity,
       setProductsQuantity,
-      setShoppingCart
+      setShoppingCart,
+      totalValue,
+      setTotalValue
       }}>
         {children}
     </ShoppingCartContext.Provider>)
@@ -25,7 +28,9 @@ export const useShoppingCartContext = () => {
       shoppingCart,
       setShoppingCart,
       productsQuantity,
-      setProductsQuantity
+      setProductsQuantity,
+      totalValue,
+      setTotalValue
     } = useContext(ShoppingCartContext);
 
     function changeQuantity(id, quantity) {
@@ -60,12 +65,19 @@ export const useShoppingCartContext = () => {
       }
 
       useEffect(() => {
-        const newQuantity = shoppingCart.reduce((acc, product) => {
-          return acc + product.quantidade;
-        }, 0)
+        const { newTotal, newQuantity} = shoppingCart.reduce((acc, product) =>
+          ({
+            newTotal: acc.newTotal + (product.quantidade * product.valor),
+            newQuantity: acc.newQuantity + product.quantidade
+          })
+        ,
+          {
+            newTotal: 0,
+            newQuantity: 0
+          })
         setProductsQuantity(newQuantity);
-
-      }, [shoppingCart, setProductsQuantity])
+        setTotalValue(newTotal);
+      }, [shoppingCart, setProductsQuantity, setTotalValue])
 
 
     return {
@@ -73,7 +85,8 @@ export const useShoppingCartContext = () => {
         setShoppingCart,
         handleAddToCart,
         handleRemoveToCart,
-        productsQuantity
+        productsQuantity,
+        totalValue
     }
 
 }

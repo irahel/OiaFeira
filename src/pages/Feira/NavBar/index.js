@@ -12,7 +12,10 @@ export default function NavBar() {
 
   return (
     <Nav>
-      <Logo />
+      <Logo
+        onClick={() => history.push('/')}
+        cursor="pointer"
+      />
       <IconButton
         disabled={productsQuantity === 0}
         onClick={() => history.push('/carrinho') }
