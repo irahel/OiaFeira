@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { usePaymentContext } from './Payment';
+import { UserContext } from './User';
 
 export const ShoppingCartContext = createContext();
 
@@ -35,6 +36,7 @@ export const useShoppingCartContext = () => {
     } = useContext(ShoppingCartContext);
 
     const { payment } = usePaymentContext();
+    const { setBalance } = useContext(UserContext);
 
     function changeQuantity(id, quantity) {
         setShoppingCart(previousShoppingCart => previousShoppingCart.map(product => {
@@ -67,6 +69,12 @@ export const useShoppingCartContext = () => {
         changeQuantity(id, -1);
       }
 
+      function handleBuy() {
+        setShoppingCart([]);
+        setBalance(previousBalance => previousBalance - totalValue);
+      }
+
+
       useEffect(() => {
         const { newTotal, newQuantity} = shoppingCart.reduce((acc, product) =>
           ({
@@ -89,7 +97,8 @@ export const useShoppingCartContext = () => {
         handleAddToCart,
         handleRemoveToCart,
         productsQuantity,
-        totalValue
+        totalValue,
+        handleBuy
     }
 
 }

@@ -10,7 +10,7 @@ import { UserContext } from 'common/context/User';
 
 function Carrinho() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const { shoppingCart, totalValue } = useShoppingCartContext();
+  const { shoppingCart, totalValue, handleBuy } = useShoppingCartContext();
   const { payment, paymentTypes, handlePaymentChange } = usePaymentContext();
   const { balance = 0 } = useContext(UserContext);
   const finalBalance = useMemo(() => balance - totalValue, [balance, totalValue]);
@@ -63,6 +63,7 @@ function Carrinho() {
         </TotalContainer>
       <Button
         onClick={() => {
+          handleBuy();
           setOpenSnackbar(true);
         }}
         color="primary"
