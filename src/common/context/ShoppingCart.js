@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
+import { usePaymentContext } from './Payment';
 
 export const ShoppingCartContext = createContext();
 
@@ -32,6 +33,8 @@ export const useShoppingCartContext = () => {
       totalValue,
       setTotalValue
     } = useContext(ShoppingCartContext);
+
+    const { payment } = usePaymentContext();
 
     function changeQuantity(id, quantity) {
         setShoppingCart(previousShoppingCart => previousShoppingCart.map(product => {
@@ -76,8 +79,8 @@ export const useShoppingCartContext = () => {
             newQuantity: 0
           })
         setProductsQuantity(newQuantity);
-        setTotalValue(newTotal);
-      }, [shoppingCart, setProductsQuantity, setTotalValue])
+        setTotalValue(newTotal * payment.fees);
+      }, [shoppingCart, setProductsQuantity, setTotalValue, payment])
 
 
     return {
